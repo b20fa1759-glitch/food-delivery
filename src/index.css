@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* FoodGo brand colours: change them here once and the whole app updates */
+@theme {
+  --color-brand-50: #f9fafb;
+  --color-brand-100: #f1f2f4;
+  --color-brand-500: #9ca3af;
+  --color-brand-600: #6b7280;
+  --color-brand-700: #4b5563;
+}

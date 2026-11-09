@@ -63,12 +63,12 @@ export default function AdminMenu() {
     <div>
       <div className="flex items-end justify-between mb-6">
         <div>
-          <Link to="/admin" className="text-sm text-orange-600">← Dashboard</Link>
+          <Link to="/admin" className="text-sm text-brand-600">← Dashboard</Link>
           <h1 className="text-2xl font-bold">Menu items</h1>
         </div>
         <button
           onClick={() => setEditing('new')}
-          className="bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-orange-700"
+          className="bg-brand-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-brand-700"
         >
           + Add dish
         </button>
@@ -102,7 +102,7 @@ export default function AdminMenu() {
                       {item.image_url ? (
                         <img src={item.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
                       ) : (
-                        <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">🍽️</div>
+                        <div className="w-12 h-12 rounded-lg bg-brand-100 flex items-center justify-center">🍽️</div>
                       )}
                       <span className="font-medium">{item.name}</span>
                     </div>
@@ -117,7 +117,7 @@ export default function AdminMenu() {
                     </span>
                   </td>
                   <td className="p-3 text-right whitespace-nowrap">
-                    <button onClick={() => setEditing(item)} className="px-3 py-1 rounded-lg text-orange-700 hover:bg-orange-50">
+                    <button onClick={() => setEditing(item)} className="px-3 py-1 rounded-lg text-brand-700 hover:bg-brand-50">
                       Edit
                     </button>
                     <button onClick={() => setDeleting(item)} className="px-3 py-1 rounded-lg text-red-600 hover:bg-red-50">

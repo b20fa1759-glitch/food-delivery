@@ -43,7 +43,7 @@ export default function ResetPassword() {
     return (
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm p-8 text-center">
         <h1 className="text-xl font-bold">Link is invalid or expired</h1>
-        <Link to="/forgot-password" className="inline-block mt-4 text-orange-600 font-semibold">
+        <Link to="/forgot-password" className="inline-block mt-4 text-brand-600 font-semibold">
           Request a new link
         </Link>
       </div>
@@ -59,7 +59,7 @@ export default function ResetPassword() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full bg-orange-600 text-white font-semibold py-2.5 rounded-lg hover:bg-orange-700 disabled:opacity-50"
+          className="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-50"
         >
           {saving ? 'Saving…' : 'Save new password'}
         </button>

@@ -6,7 +6,7 @@ import FormField from '../../components/FormField'
 const MAX_SIZE = 2 * 1024 * 1024 // 2 MB, same limit as the storage bucket
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const inputClass =
-  'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500'
+  'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand-500'
 
 // item = null → "Add" mode, item = object → "Edit" mode
 export default function MenuItemForm({ item, restaurants, categories, onClose, onSaved }) {
@@ -163,7 +163,7 @@ export default function MenuItemForm({ item, restaurants, categories, onClose, o
                 onClick={() => toggleCategory(c.id)}
                 className={`px-3 py-1 rounded-full border text-sm ${
                   categoryIds.includes(c.id)
-                    ? 'bg-orange-600 border-orange-600 text-white'
+                    ? 'bg-brand-600 border-brand-600 text-white'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -185,7 +185,7 @@ export default function MenuItemForm({ item, restaurants, categories, onClose, o
         </div>
 
         <label className="flex items-center gap-2">
-          <input type="checkbox" name="is_available" checked={form.is_available} onChange={handleChange} className="w-4 h-4 accent-orange-600" />
+          <input type="checkbox" name="is_available" checked={form.is_available} onChange={handleChange} className="w-4 h-4 accent-brand-600" />
           <span>Available to order</span>
         </label>
 
@@ -196,7 +196,7 @@ export default function MenuItemForm({ item, restaurants, categories, onClose, o
           <button
             type="submit"
             disabled={saving}
-            className="px-5 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 disabled:opacity-50"
+            className="px-5 py-2 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700 disabled:opacity-50"
           >
             {saving ? 'Saving…' : 'Save'}
           </button>

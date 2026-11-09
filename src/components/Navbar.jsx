@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 
 const linkClass = ({ isActive }) =>
   `px-3 py-2 rounded-lg font-medium ${
-    isActive ? 'bg-orange-100 text-orange-700' : 'text-gray-700 hover:bg-gray-100'
+    isActive ? 'bg-brand-100 text-brand-700' : 'text-gray-700 hover:bg-gray-100'
   }`
 
 export default function Navbar() {
@@ -37,7 +37,7 @@ export default function Navbar() {
   ) : (
     <>
       <NavLink to="/login" className={linkClass}>Login</NavLink>
-      <Link to="/register" className="px-4 py-2 rounded-lg bg-orange-600 text-white font-medium hover:bg-orange-700">
+      <Link to="/register" className="px-4 py-2 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700">
         Sign up
       </Link>
     </>
@@ -46,7 +46,7 @@ export default function Navbar() {
   return (
     <header className="bg-white border-b sticky top-0 z-10">
       <nav className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-orange-600">FoodGo 🍔</Link>
+        <Link to="/" className="text-2xl font-bold text-brand-600">FoodGo 🍔</Link>
 
         <div className="hidden md:flex items-center gap-1">
           {links.map((l) => (

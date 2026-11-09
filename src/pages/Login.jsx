@@ -46,18 +46,18 @@ export default function Login() {
         <FormField label="Email" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} />
         <FormField label="Password" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} />
         <div className="text-right -mt-2">
-          <Link to="/forgot-password" className="text-sm text-orange-600">Forgot password?</Link>
+          <Link to="/forgot-password" className="text-sm text-brand-600">Forgot password?</Link>
         </div>
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-orange-600 text-white font-semibold py-2.5 rounded-lg hover:bg-orange-700 disabled:opacity-50"
+          className="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-50"
         >
           {submitting ? 'Logging in…' : 'Log in'}
         </button>
       </form>
       <p className="text-sm text-center mt-4 text-gray-600">
-        No account yet? <Link to="/register" className="text-orange-600 font-semibold">Sign up</Link>
+        No account yet? <Link to="/register" className="text-brand-600 font-semibold">Sign up</Link>
       </p>
     </div>
   )

@@ -38,7 +38,7 @@ async function fetchMenu({ query, categoryId, minPrice, maxPrice, sort, page }) 
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500'
+  'w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand-500'
 
 export default function Menu() {
   const [categories, setCategories] = useState([])
@@ -154,7 +154,7 @@ export default function Menu() {
           <p className="text-4xl">🔍</p>
           <p className="mt-2 font-semibold">No dishes found</p>
           <p className="text-gray-500 text-sm">Try another name, category or price range.</p>
-          <button onClick={clearFilters} className="mt-4 text-orange-600 font-semibold">Clear filters</button>
+          <button onClick={clearFilters} className="mt-4 text-brand-600 font-semibold">Clear filters</button>
         </div>
       )}
 

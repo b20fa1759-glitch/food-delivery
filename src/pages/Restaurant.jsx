@@ -32,7 +32,7 @@ export default function Restaurant() {
     return (
       <div className="text-center py-20">
         <h1 className="text-2xl font-bold">Restaurant not found</h1>
-        <Link to="/" className="inline-block mt-4 text-orange-600 font-semibold">← Back to restaurants</Link>
+        <Link to="/" className="inline-block mt-4 text-brand-600 font-semibold">← Back to restaurants</Link>
       </div>
     )
   }
@@ -42,7 +42,7 @@ export default function Restaurant() {
 
   return (
     <div>
-      <Link to="/" className="text-sm text-orange-600">← All restaurants</Link>
+      <Link to="/" className="text-sm text-brand-600">← All restaurants</Link>
 
       <div className="bg-white rounded-2xl shadow-sm p-6 mt-2 mb-8">
         <div className="flex flex-wrap items-center gap-3">

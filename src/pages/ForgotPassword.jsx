@@ -46,7 +46,7 @@ export default function ForgotPassword() {
             <button
               type="submit"
               disabled={sending}
-              className="w-full bg-orange-600 text-white font-semibold py-2.5 rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              className="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-50"
             >
               {sending ? 'Sending…' : 'Send reset link'}
             </button>
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
       )}
 
       <p className="text-sm text-center mt-4">
-        <Link to="/login" className="text-orange-600 font-semibold">← Back to login</Link>
+        <Link to="/login" className="text-brand-600 font-semibold">← Back to login</Link>
       </p>
     </div>
   )

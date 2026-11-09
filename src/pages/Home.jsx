@@ -22,10 +22,10 @@ export default function Home() {
 
   return (
     <div>
-      <section className="rounded-2xl bg-orange-600 text-white p-8 mb-8">
+      <section className="rounded-2xl bg-brand-600 text-white p-8 mb-8">
         <h1 className="text-3xl md:text-4xl font-bold">Hungry? Order in minutes.</h1>
-        <p className="mt-2 text-orange-100">Ulaanbaatar's favourite restaurants, delivered to your door.</p>
-        <Link to="/menu" className="inline-block mt-4 bg-white text-orange-700 font-semibold px-5 py-2 rounded-lg">
+        <p className="mt-2 text-brand-100">Ulaanbaatar's favourite restaurants, delivered to your door.</p>
+        <Link to="/menu" className="inline-block mt-4 bg-white text-brand-700 font-semibold px-5 py-2 rounded-lg">
           Browse menu
         </Link>
       </section>

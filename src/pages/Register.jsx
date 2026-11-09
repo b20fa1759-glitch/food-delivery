@@ -60,13 +60,13 @@ export default function Register() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-orange-600 text-white font-semibold py-2.5 rounded-lg hover:bg-orange-700 disabled:opacity-50"
+          className="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-50"
         >
           {submitting ? 'Creating account…' : 'Sign up'}
         </button>
       </form>
       <p className="text-sm text-center mt-4 text-gray-600">
-        Already have an account? <Link to="/login" className="text-orange-600 font-semibold">Log in</Link>
+        Already have an account? <Link to="/login" className="text-brand-600 font-semibold">Log in</Link>
       </p>
     </div>
   )
