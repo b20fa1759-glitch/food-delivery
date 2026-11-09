@@ -1,6 +1,7 @@
 -- =====================================================================
 -- Storage: image bucket with size and type limits
---   * public read (images shown on the site)
+--   * public bucket: images open by their public URL (no SELECT policy
+--     needed, so nobody can list all files in the bucket)
 --   * max 2 MB, only JPG / PNG / WEBP  (also checked in React before upload)
 --   * only admin can upload / replace / delete
 -- =====================================================================
@@ -14,10 +15,6 @@ values (
   array['image/jpeg', 'image/png', 'image/webp']
 )
 on conflict (id) do nothing;
-
-create policy "food-images: public read"
-  on storage.objects for select
-  using (bucket_id = 'food-images');
 
 create policy "food-images: admin insert"
   on storage.objects for insert

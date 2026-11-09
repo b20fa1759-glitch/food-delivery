@@ -9,6 +9,7 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminMenu from './pages/admin/AdminMenu'
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         {/* Admins only */}
         <Route element={<ProtectedRoute adminOnly />}>
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/menu" element={<AdminMenu />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
