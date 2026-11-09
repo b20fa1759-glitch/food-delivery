@@ -45,6 +45,9 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <FormField label="Email" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} />
         <FormField label="Password" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} />
+        <div className="text-right -mt-2">
+          <Link to="/forgot-password" className="text-sm text-orange-600">Forgot password?</Link>
+        </div>
         <button
           type="submit"
           disabled={submitting}

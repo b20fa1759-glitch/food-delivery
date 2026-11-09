@@ -6,6 +6,8 @@ import Menu from './pages/Menu'
 import Restaurant from './pages/Restaurant'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/restaurants/:id" element={<Restaurant />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Logged-in users only */}
         <Route element={<ProtectedRoute />}>
