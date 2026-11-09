@@ -15,30 +15,30 @@ export default function Navbar() {
 
   async function handleLogout() {
     await signOut()
-    toast.success('Logged out')
+    toast.success('Системээс гарлаа')
     navigate('/')
   }
 
-  // The links depend on who is logged in
+  // Холбоосууд нь хэн нэвтэрснээс хамаарна
   const links = [
-    { to: '/', label: 'Home' },
-    { to: '/menu', label: 'Menu' },
-    ...(user ? [{ to: '/profile', label: 'Profile' }] : []),
-    ...(isAdmin ? [{ to: '/admin', label: 'Admin' }] : []),
+    { to: '/', label: 'Нүүр' },
+    { to: '/menu', label: 'Цэс' },
+    ...(user ? [{ to: '/profile', label: 'Профайл' }] : []),
+    ...(isAdmin ? [{ to: '/admin', label: 'Админ' }] : []),
   ]
 
   const authButtons = user ? (
     <>
-      <span className="px-3 text-sm text-gray-500">Hi, {profile?.full_name || 'there'}</span>
+      <span className="px-3 text-sm text-gray-500">Сайн уу, {profile?.full_name || 'та'}</span>
       <button onClick={handleLogout} className="px-4 py-2 rounded-lg border border-gray-300 font-medium hover:bg-gray-100">
-        Log out
+        Гарах
       </button>
     </>
   ) : (
     <>
-      <NavLink to="/login" className={linkClass}>Login</NavLink>
+      <NavLink to="/login" className={linkClass}>Нэвтрэх</NavLink>
       <Link to="/register" className="px-4 py-2 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700">
-        Sign up
+        Бүртгүүлэх
       </Link>
     </>
   )
@@ -55,7 +55,7 @@ export default function Navbar() {
           <div className="ml-2 flex items-center gap-1">{authButtons}</div>
         </div>
 
-        <button className="md:hidden p-2 text-2xl" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        <button className="md:hidden p-2 text-2xl" onClick={() => setOpen(!open)} aria-label="Цэс нээх, хаах">
           {open ? '✕' : '☰'}
         </button>
       </nav>

@@ -19,32 +19,32 @@ export default function ResetPassword() {
   async function handleSubmit(e) {
     e.preventDefault()
     const found = {}
-    if (form.password.length < 6) found.password = 'Password must be at least 6 characters'
-    if (form.confirm !== form.password) found.confirm = 'Passwords do not match'
+    if (form.password.length < 6) found.password = 'Нууц үг дор хаяж 6 тэмдэгт байна'
+    if (form.confirm !== form.password) found.confirm = 'Нууц үг таарахгүй байна'
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
     setSaving(true)
-    // The email link logged the user in temporarily, so we can change the password
+    // Имэйлийн холбоос хэрэглэгчийг түр нэвтрүүлсэн тул нууц үгийг сольж болно
     const { error } = await supabase.auth.updateUser({ password: form.password })
     setSaving(false)
     if (error) {
-      toast.error(error.message)
+      toast.error('Нууц үг сольж чадсангүй. Дахин оролдоно уу.')
       return
     }
-    toast.success('Password changed!')
+    toast.success('Нууц үг амжилттай солигдлоо!')
     navigate('/profile')
   }
 
-  if (loading) return <p className="text-gray-500">Loading…</p>
+  if (loading) return <p className="text-gray-500">Ачаалж байна…</p>
 
-  // Opened without a valid email link (or the link expired)
+  // Хүчинтэй холбоосгүйгээр нээсэн (эсвэл хугацаа нь дууссан)
   if (!user) {
     return (
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm p-8 text-center">
-        <h1 className="text-xl font-bold">Link is invalid or expired</h1>
+        <h1 className="text-xl font-bold">Холбоос хүчингүй эсвэл хугацаа нь дууссан байна</h1>
         <Link to="/forgot-password" className="inline-block mt-4 text-brand-600 font-semibold">
-          Request a new link
+          Шинэ холбоос авах
         </Link>
       </div>
     )
@@ -52,16 +52,16 @@ export default function ResetPassword() {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm p-8">
-      <h1 className="text-2xl font-bold mb-6">Set a new password</h1>
+      <h1 className="text-2xl font-bold mb-6">Шинэ нууц үг тохируулах</h1>
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        <FormField label="New password" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} />
-        <FormField label="Confirm new password" name="confirm" type="password" value={form.confirm} onChange={handleChange} error={errors.confirm} />
+        <FormField label="Шинэ нууц үг" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} />
+        <FormField label="Шинэ нууц үг давтах" name="confirm" type="password" value={form.confirm} onChange={handleChange} error={errors.confirm} />
         <button
           type="submit"
           disabled={saving}
           className="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-50"
         >
-          {saving ? 'Saving…' : 'Save new password'}
+          {saving ? 'Хадгалж байна…' : 'Шинэ нууц үг хадгалах'}
         </button>
       </form>
     </div>

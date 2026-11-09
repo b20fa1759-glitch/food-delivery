@@ -1,4 +1,4 @@
-// Shows ← Prev | Page 1 of 3 | Next →   (hidden when there is only one page)
+// ← Өмнөх | Хуудас 1 / 3 | Дараах →   (ганц хуудастай бол харагдахгүй)
 export default function Pagination({ page, totalPages, onChange }) {
   if (totalPages <= 1) return null
 
@@ -7,11 +7,11 @@ export default function Pagination({ page, totalPages, onChange }) {
   return (
     <div className="flex items-center justify-center gap-3 mt-8">
       <button onClick={() => onChange(page - 1)} disabled={page === 1} className={buttonClass}>
-        ← Prev
+        ← Өмнөх
       </button>
-      <span className="text-sm text-gray-600">Page {page} of {totalPages}</span>
+      <span className="text-sm text-gray-600">Хуудас {page} / {totalPages}</span>
       <button onClick={() => onChange(page + 1)} disabled={page === totalPages} className={buttonClass}>
-        Next →
+        Дараах →
       </button>
     </div>
   )

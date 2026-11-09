@@ -12,18 +12,18 @@ const SORTS = {
   name: { column: 'name', ascending: true },
 }
 
-// Builds ONE database query from all the filters
+// Бүх шүүлтүүрээс НЭГ хүсэлт бүтээнэ
 async function fetchMenu({ query, categoryId, minPrice, maxPrice, sort, page }) {
   let request = supabase
     .from('menu_items')
     .select(
       'id, name, description, price, image_url, created_at, restaurants(name), menu_item_categories!inner(category_id)',
-      { count: 'exact' } // also return the total number of matches (for pagination)
+      { count: 'exact' } // хуудаслалтад зориулж нийт тоог мөн буцаана
     )
     .eq('is_available', true)
 
-  if (query) request = request.ilike('name', `%${query}%`) // name contains the text, ignoring case
-  if (categoryId) request = request.eq('menu_item_categories.category_id', categoryId) // N:M filter
+  if (query) request = request.ilike('name', `%${query}%`) // нэр нь текстийг агуулж байгаа эсэх (том жижиг үсэг хамаарахгүй)
+  if (categoryId) request = request.eq('menu_item_categories.category_id', categoryId) // N:M шүүлт
   if (minPrice) request = request.gte('price', Number(minPrice))
   if (maxPrice) request = request.lte('price', Number(maxPrice))
 
@@ -31,7 +31,7 @@ async function fetchMenu({ query, categoryId, minPrice, maxPrice, sort, page }) 
   request = request.order(column, { ascending }).order('id')
 
   const from = (page - 1) * PAGE_SIZE
-  request = request.range(from, from + PAGE_SIZE - 1) // e.g. page 2 → rows 8..15
+  request = request.range(from, from + PAGE_SIZE - 1) // ж: 2-р хуудас → 8..15-р мөр
 
   const { data, count, error } = await request
   return { items: data ?? [], count: count ?? 0, error }
@@ -42,8 +42,8 @@ const inputClass =
 
 export default function Menu() {
   const [categories, setCategories] = useState([])
-  const [search, setSearch] = useState('') // what the user is typing
-  const [query, setQuery] = useState('') // what we actually search for (after a short pause)
+  const [search, setSearch] = useState('') // хэрэглэгчийн бичиж буй текст
+  const [query, setQuery] = useState('') // богино хүлээлтийн дараа хайх текст
   const [categoryId, setCategoryId] = useState('')
   const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
@@ -51,7 +51,7 @@ export default function Menu() {
   const [page, setPage] = useState(1)
   const [result, setResult] = useState({ key: null, items: [], count: 0, error: null })
 
-  // Load the category list once
+  // Ангиллын жагсаалтыг нэг удаа ачаална
   useEffect(() => {
     supabase
       .from('categories')
@@ -60,7 +60,7 @@ export default function Menu() {
       .then(({ data }) => setCategories(data ?? []))
   }, [])
 
-  // Debounce: wait 400 ms after the user stops typing, then search
+  // Debounce: бичиж дууссанаас хойш 400 мс хүлээгээд хайна
   useEffect(() => {
     const timer = setTimeout(() => {
       setQuery(search.trim())
@@ -69,7 +69,7 @@ export default function Menu() {
     return () => clearTimeout(timer)
   }, [search])
 
-  // All filters in one string: when any filter changes, the data loads again
+  // Бүх шүүлтүүр нэг мөрөнд: аль нэг нь өөрчлөгдөхөд өгөгдөл дахин ачаалагдана
   const queryKey = JSON.stringify({ query, categoryId, minPrice, maxPrice, sort, page })
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Menu() {
   const loading = result.key !== queryKey
   const totalPages = Math.max(1, Math.ceil(result.count / PAGE_SIZE))
 
-  // Changing any filter goes back to page 1
+  // Шүүлтүүр өөрчлөгдөхөд 1-р хуудас руу буцна
   function updateFilter(setter) {
     return (e) => {
       setter(e.target.value)
@@ -105,41 +105,42 @@ export default function Menu() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Menu</h1>
+      <h1 className="text-2xl font-bold mb-4">Цэс</h1>
 
-      {/* Filter bar */}
+      {/* Шүүлтүүрийн мөр */}
       <div className="bg-white rounded-xl shadow-sm p-4 mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <input
           type="search"
-          placeholder="Search dishes…"
+          placeholder="Хоол хайх…"
+          aria-label="Хоол хайх"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className={`${inputClass} lg:col-span-2`}
         />
-        <select value={categoryId} onChange={updateFilter(setCategoryId)} className={inputClass}>
-          <option value="">All categories</option>
+        <select value={categoryId} onChange={updateFilter(setCategoryId)} className={inputClass} aria-label="Ангилал">
+          <option value="">Бүх ангилал</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
         <div className="flex gap-2">
-          <input type="number" min="0" placeholder="Min ₮" value={minPrice} onChange={updateFilter(setMinPrice)} className={inputClass} />
-          <input type="number" min="0" placeholder="Max ₮" value={maxPrice} onChange={updateFilter(setMaxPrice)} className={inputClass} />
+          <input type="number" min="0" placeholder="Доод ₮" aria-label="Доод үнэ" value={minPrice} onChange={updateFilter(setMinPrice)} className={inputClass} />
+          <input type="number" min="0" placeholder="Дээд ₮" aria-label="Дээд үнэ" value={maxPrice} onChange={updateFilter(setMaxPrice)} className={inputClass} />
         </div>
-        <select value={sort} onChange={updateFilter(setSort)} className={inputClass}>
-          <option value="newest">Newest first</option>
-          <option value="price_asc">Price: low to high</option>
-          <option value="price_desc">Price: high to low</option>
-          <option value="name">Name A–Z</option>
+        <select value={sort} onChange={updateFilter(setSort)} className={inputClass} aria-label="Эрэмбэ">
+          <option value="newest">Шинэ нь эхэндээ</option>
+          <option value="price_asc">Үнэ: багаас их</option>
+          <option value="price_desc">Үнэ: ихээс бага</option>
+          <option value="name">Нэрээр (А–Я)</option>
         </select>
       </div>
 
-      {/* Error state */}
+      {/* Алдааны төлөв */}
       {!loading && result.error && (
-        <p className="text-red-600 mb-4">Could not load the menu: {result.error.message}</p>
+        <p className="text-red-600 mb-4">Цэсийг ачаалж чадсангүй: {result.error.message}</p>
       )}
 
-      {/* Loading state: grey placeholder cards */}
+      {/* Ачаалж буй төлөв: саарал хоосон картууд */}
       {loading && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -148,20 +149,20 @@ export default function Menu() {
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Хоосон төлөв */}
       {!loading && !result.error && result.items.length === 0 && (
         <div className="text-center py-16 bg-white rounded-xl">
           <p className="text-4xl">🔍</p>
-          <p className="mt-2 font-semibold">No dishes found</p>
-          <p className="text-gray-500 text-sm">Try another name, category or price range.</p>
-          <button onClick={clearFilters} className="mt-4 text-brand-600 font-semibold">Clear filters</button>
+          <p className="mt-2 font-semibold">Хоол олдсонгүй</p>
+          <p className="text-gray-500 text-sm">Өөр нэр, ангилал эсвэл үнийн хязгаар оролдоно уу.</p>
+          <button onClick={clearFilters} className="mt-4 text-brand-600 font-semibold">Шүүлтүүрийг арилгах</button>
         </div>
       )}
 
-      {/* Results */}
+      {/* Илэрц */}
       {!loading && result.items.length > 0 && (
         <>
-          <p className="text-sm text-gray-500 mb-3">{result.count} dishes found</p>
+          <p className="text-sm text-gray-500 mb-3">{result.count} хоол олдлоо</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {result.items.map((item) => (
               <FoodCard key={item.id} item={item} showRestaurant />

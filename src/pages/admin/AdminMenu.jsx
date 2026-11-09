@@ -6,7 +6,7 @@ import { formatPrice } from '../../utils/format'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import MenuItemForm from './MenuItemForm'
 
-// Load dishes (with restaurant name + category links), restaurants and categories at the same time
+// Хоол (ресторан нэр, ангиллын холбоостой), ресторан, ангиллыг зэрэг ачаална
 async function fetchAll() {
   const [items, restaurants, categories] = await Promise.all([
     supabase
@@ -29,14 +29,14 @@ export default function AdminMenu() {
   const [restaurants, setRestaurants] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
-  const [reloadKey, setReloadKey] = useState(0) // change it to load the data again
-  const [editing, setEditing] = useState(null) // null = form closed, 'new' = add, object = edit
-  const [deleting, setDeleting] = useState(null) // the dish waiting for delete confirmation
+  const [reloadKey, setReloadKey] = useState(0) // өөрчилбөл өгөгдлийг дахин ачаална
+  const [editing, setEditing] = useState(null) // null = форм хаалттай, 'new' = нэмэх, объект = засах
+  const [deleting, setDeleting] = useState(null) // устгахыг баталгаажуулах хоол
   const [deleteLoading, setDeleteLoading] = useState(false)
 
   useEffect(() => {
     fetchAll().then((result) => {
-      if (result.error) toast.error(result.error.message)
+      if (result.error) toast.error('Өгөгдөл ачаалж чадсангүй: ' + result.error.message)
       setItems(result.items)
       setRestaurants(result.restaurants)
       setCategories(result.categories)
@@ -51,10 +51,10 @@ export default function AdminMenu() {
     const { error } = await supabase.from('menu_items').delete().eq('id', deleting.id)
     setDeleteLoading(false)
     if (error) {
-      toast.error(error.message)
+      toast.error('Устгаж чадсангүй: ' + error.message)
       return
     }
-    toast.success('Dish deleted')
+    toast.success('Хоол устгагдлаа')
     setDeleting(null)
     reload()
   }
@@ -63,22 +63,22 @@ export default function AdminMenu() {
     <div>
       <div className="flex items-end justify-between mb-6">
         <div>
-          <Link to="/admin" className="text-sm text-brand-600">← Dashboard</Link>
-          <h1 className="text-2xl font-bold">Menu items</h1>
+          <Link to="/admin" className="text-sm text-brand-600">← Самбар</Link>
+          <h1 className="text-2xl font-bold">Хоолны цэс</h1>
         </div>
         <button
           onClick={() => setEditing('new')}
           className="bg-brand-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-brand-700"
         >
-          + Add dish
+          + Хоол нэмэх
         </button>
       </div>
 
-      {loading && <p className="text-gray-500">Loading…</p>}
+      {loading && <p className="text-gray-500">Ачаалж байна…</p>}
 
       {!loading && items.length === 0 && (
         <p className="text-center text-gray-500 py-12 bg-white rounded-xl">
-          No dishes yet. Click “Add dish” to create one.
+          Хоол алга байна. «Хоол нэмэх» дээр дарж үүсгэнэ үү.
         </p>
       )}
 
@@ -87,11 +87,11 @@ export default function AdminMenu() {
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-gray-500">
               <tr>
-                <th className="p-3">Dish</th>
-                <th className="p-3">Restaurant</th>
-                <th className="p-3">Price</th>
-                <th className="p-3">Status</th>
-                <th className="p-3 text-right">Actions</th>
+                <th className="p-3">Хоол</th>
+                <th className="p-3">Ресторан</th>
+                <th className="p-3">Үнэ</th>
+                <th className="p-3">Төлөв</th>
+                <th className="p-3 text-right">Үйлдэл</th>
               </tr>
             </thead>
             <tbody>
@@ -113,15 +113,15 @@ export default function AdminMenu() {
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       item.is_available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
                     }`}>
-                      {item.is_available ? 'Available' : 'Hidden'}
+                      {item.is_available ? 'Боломжтой' : 'Нуусан'}
                     </span>
                   </td>
                   <td className="p-3 text-right whitespace-nowrap">
                     <button onClick={() => setEditing(item)} className="px-3 py-1 rounded-lg text-brand-700 hover:bg-brand-50">
-                      Edit
+                      Засах
                     </button>
                     <button onClick={() => setDeleting(item)} className="px-3 py-1 rounded-lg text-red-600 hover:bg-red-50">
-                      Delete
+                      Устгах
                     </button>
                   </td>
                 </tr>
@@ -147,8 +147,8 @@ export default function AdminMenu() {
 
       <ConfirmDialog
         open={Boolean(deleting)}
-        title="Delete dish?"
-        message={`“${deleting?.name}” will be removed permanently.`}
+        title="Хоолыг устгах уу?"
+        message={`«${deleting?.name}» бүр мөсөн устгагдана.`}
         loading={deleteLoading}
         onConfirm={handleDelete}
         onCancel={() => setDeleting(null)}
