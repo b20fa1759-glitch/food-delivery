@@ -1,0 +1,153 @@
+// FoodGo – Online Food Delivery · SWE334
+// 10 tables · 1:N and N:M relations
+
+Enum user_role {
+  customer
+  admin
+}
+
+Enum order_status {
+  pending
+  paid
+  preparing
+  delivering
+  delivered
+  cancelled
+}
+
+Enum payment_status {
+  pending
+  paid
+  failed
+  refunded
+}
+
+Table profiles {
+  id uuid [pk, note: 'same id as auth.users']
+  full_name text
+  phone text
+  avatar_url text
+  role user_role [default: 'customer']
+  created_at timestamptz
+}
+
+Table categories {
+  id bigint [pk, increment]
+  name text [unique]
+  slug text [unique]
+  image_url text
+  sort_order int
+  created_at timestamptz
+}
+
+Table restaurants {
+  id bigint [pk, increment]
+  name text
+  description text
+  image_url text
+  address text
+  phone text
+  delivery_fee int
+  min_order int
+  is_open boolean
+  created_at timestamptz
+}
+
+Table menu_items {
+  id bigint [pk, increment]
+  restaurant_id bigint [ref: > restaurants.id]
+  name text
+  description text
+  price int
+  image_url text
+  is_available boolean
+  created_at timestamptz
+}
+
+Table menu_item_categories {
+  menu_item_id bigint [ref: > menu_items.id]
+  category_id bigint [ref: > categories.id]
+  indexes {
+    (menu_item_id, category_id) [pk]
+  }
+  Note: 'N:M menu_items - categories'
+}
+
+Table addresses {
+  id bigint [pk, increment]
+  user_id uuid [ref: > profiles.id]
+  label text
+  district text
+  khoroo text
+  detail text
+  phone text
+  is_default boolean
+  created_at timestamptz
+}
+
+Table cart_items {
+  user_id uuid [ref: > profiles.id]
+  menu_item_id bigint [ref: > menu_items.id]
+  quantity int
+  added_at timestamptz
+  indexes {
+    (user_id, menu_item_id) [pk]
+  }
+  Note: 'N:M profiles - menu_items (cart)'
+}
+
+Table orders {
+  id bigint [pk, increment]
+  user_id uuid [ref: > profiles.id]
+  restaurant_id bigint [ref: > restaurants.id]
+  address_id bigint [ref: > addresses.id]
+  delivery_address text
+  note text
+  status order_status [default: 'pending']
+  subtotal int
+  delivery_fee int
+  total int
+  created_at timestamptz
+  paid_at timestamptz
+}
+
+Table order_items {
+  id bigint [pk, increment]
+  order_id bigint [ref: > orders.id]
+  menu_item_id bigint [ref: > menu_items.id]
+  name text [note: 'copy of the name at order time']
+  unit_price int [note: 'copy of the price at order time']
+  quantity int
+  Note: 'N:M orders - menu_items'
+}
+
+Table payments {
+  id bigint [pk, increment]
+  order_id bigint [ref: > orders.id]
+  provider text
+  provider_ref text [unique, note: 'Stripe session id']
+  amount int
+  status payment_status [default: 'pending']
+  raw_event jsonb
+  created_at timestamptz
+  paid_at timestamptz
+}
+
+TableGroup Menu {
+  restaurants
+  menu_items
+  categories
+  menu_item_categories
+}
+
+TableGroup Users {
+  profiles
+  addresses
+  cart_items
+}
+
+TableGroup Orders {
+  orders
+  order_items
+  payments
+}
